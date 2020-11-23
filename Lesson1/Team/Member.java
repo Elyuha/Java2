@@ -4,6 +4,7 @@ public interface Member {
     String run(int dist);
     String swim(int dist);
     String jump(int height);
+    String getName();
 
     boolean onDistance();
 }

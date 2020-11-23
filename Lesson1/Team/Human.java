@@ -15,11 +15,13 @@ public class Human implements Member {
         onDistance = true;
     }
 
+
     @Override
     public String run(int dist) {
         if(distRun > dist)
             return (name + " пробежал!");
         else {
+            onDistance = false;
             return (name + " не пробежал!");
         }
     }
@@ -29,6 +31,7 @@ public class Human implements Member {
         if(distSwim > dist)
             return (name + " проплыл!");
         else {
+            onDistance = false;
             return (name + " не проплыл!");
         }
     }
@@ -38,8 +41,14 @@ public class Human implements Member {
         if(heightJump > height)
             return (name + " перепрыгнул!");
         else {
+            onDistance = false;
             return (name + " не перепрыгнул!");
         }
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 
     @Override

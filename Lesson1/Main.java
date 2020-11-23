@@ -6,7 +6,7 @@ import Lesson1.Team.*;
 public class Main {
 
     public static void main(String[] args) {
-	// write your code here
+        // write your code here
         Course c = new Course(new Cross(2300), new Wall(7), new Water(10000)); // Создаем полосу препятствий
         Team team = new Team("GACHI MASTERS",
                 new Human("Billy Harington", 10000, 20000, 10),

@@ -18,9 +18,13 @@ public class Course {
         for(Member member:team.getMembers()){
             for(Obstacle obstacle:obstacles){
                 team.setStageResult(obstacle.doIt(member));
-                if (!member.onDistance())
+                if (!member.onDistance()) {
+                    team.setStageResult(member.getName() + " не прошёл полосу препятствий!\n");
                     break;
+                }
             }
+            if(member.onDistance())
+                team.setStageResult(member.getName() + " прошёл полосу препятствий!\n");
         }
     }
 }
