@@ -3,7 +3,7 @@ package Lesson2;
 import com.sun.deploy.util.StringUtils;
 
 public class StringToInt {
-    
+
     public static int[][] toInt(String[][] arrayString) throws ArrayExeption{
         try {
             doCheckSize(arrayString);
