@@ -1,2 +1,9 @@
-package Lesson8.App;public class ServerApp {
+package Lesson8.App;
+
+import Lesson8.Server.ServerChat;
+
+public class ServerApp {
+    public static void main(String[] args) {
+        ServerChat serverChat = new ServerChat();
+    }
 }

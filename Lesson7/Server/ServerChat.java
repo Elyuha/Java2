@@ -1,4 +1,4 @@
-package Lesson7;
+package Lesson7.Server;
 
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -10,6 +10,7 @@ public class ServerChat implements Chat {
     private ServerSocket serverSocket;
     private Set<ClientHandler> clients;
     private AuthenticationService authenticationService;
+
 
     public ServerChat() {
         start();
@@ -63,6 +64,14 @@ public class ServerChat implements Chat {
     @Override
     public void unsubscribe(ClientHandler client) {
         clients.remove(client);
+    }
+
+    @Override
+    public ClientHandler searchClient(String name) {
+        for(ClientHandler client : clients)
+            if(client.getName().equals(name))
+                return client;
+        return null;
     }
 }
 

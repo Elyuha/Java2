@@ -1,4 +1,4 @@
-package Lesson7;
+package Lesson7.Server;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -46,7 +46,7 @@ public class ClientHandler {
              */
             while (true) {
                 String mayBeCredentials = in.readUTF();
-                if (mayBeCredentials.startsWith("-auth")) {
+                if (mayBeCredentials.startsWith("-auth ")) {
                     String[] credentials = mayBeCredentials.split("\\s");
                     String mayBeNickname = chat.getAuthenticationService()
                             .findNicknameByLoginAndPassword(credentials[1], credentials[2]);
@@ -74,7 +74,7 @@ public class ClientHandler {
 
     public void sendMessage(String message) {
         try {
-            out.writeUTF(message);
+                out.writeUTF(message);
         } catch (IOException e) {
             throw new RuntimeException("SWW", e);
         }
@@ -89,7 +89,19 @@ public class ClientHandler {
                     chat.broadcastMessage(String.format("[%s] logged out", name));
                     break;
                 }
-                chat.broadcastMessage(String.format("[%s]: %s", name, message));
+                if (message.startsWith("-pm")) {
+                    String[] words = message.split("\\s");
+                    ClientHandler client = chat.searchClient(words[1]);
+                    if(client != null) {
+                        String newMessage = message.replaceAll(words[0] + " " + words[1], "");
+                        client.out.writeUTF(String.format("Message from %s: %s", name, newMessage));
+                        out.writeUTF("To " + client.getName() + ": " + newMessage);
+                    }
+                    else
+                        out.writeUTF("Client doesn't exist.");
+                }
+                else
+                    chat.broadcastMessage(String.format("[%s]: %s", name, message));
             } catch (IOException e) {
                 throw new RuntimeException("SWW", e);
             }

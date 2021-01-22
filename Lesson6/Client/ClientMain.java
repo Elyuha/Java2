@@ -1,4 +1,7 @@
-package Lesson6;
+package Lesson6.Client;
 
 public class ClientMain {
+    public static void main(String[] args) {
+        new Client();
+    }
 }

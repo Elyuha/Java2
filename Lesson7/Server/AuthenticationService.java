@@ -1,4 +1,4 @@
-package Lesson7;
+package Lesson7.Server;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -8,11 +8,9 @@ public class AuthenticationService {
 
     public AuthenticationService() {
         entries = new HashSet<CredentialsEntry>();
-        Set.of(
-                new CredentialsEntry("l1", "p1", "nickname1"),
-                new CredentialsEntry("l2", "p2", "nickname2"),
-                new CredentialsEntry("l3", "p3", "nickname3")
-        );
+        entries.add(new CredentialsEntry("l1", "p1", "nickname1"));
+        entries.add(new CredentialsEntry("l2", "p2", "nickname2"));
+        entries.add(new CredentialsEntry("l3", "p3", "nickname3"));
     }
 
     public String findNicknameByLoginAndPassword(String login, String password) {

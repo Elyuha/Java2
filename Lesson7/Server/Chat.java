@@ -1,4 +1,6 @@
-package Lesson7;
+package Lesson7.Server;
+
+
 
 public interface Chat {
     void broadcastMessage(String message);
@@ -6,5 +8,6 @@ public interface Chat {
     void subscribe(ClientHandler client);
     void unsubscribe(ClientHandler client);
     AuthenticationService getAuthenticationService();
+    ClientHandler searchClient(String name);
 }
 
