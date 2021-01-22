@@ -5,12 +5,13 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-public class ClientHandler {
+public class ClientHandler implements Runnable {
     private String name;
     private DataInputStream in;
     private DataOutputStream out;
     private Socket socket;
     private Chat chat;
+    private static final Object lockFile = new Object();
 
     public ClientHandler(Socket socket, Chat chat) {
         this.socket = socket;
@@ -21,22 +22,21 @@ public class ClientHandler {
         } catch (Exception e) {
             throw new RuntimeException("SWW", e);
         }
-
-        listen();
     }
 
     public String getName() {
         return name;
     }
 
-    private void listen() {
-        new Thread(() -> {
-            if(!checkReg())
-                doReg();
-            doAuth();
+    @Override
+    public void run() {
+        if(!checkReg())
+            doReg();
+        doAuth();
+        synchronized (lockFile) {
             sendMessage(chat.showLastHundredMessage());
-            receiveMessage();
-        }).start();
+        }
+        receiveMessage();
     }
 
     private boolean checkReg() {
@@ -173,7 +173,9 @@ public class ClientHandler {
                     }
                 } else {
                     chat.broadcastMessage(String.format("[%s]: %s", name, message));
-                    chat.addMessageToFile(String.format("[%s]: %s\n", name, message));
+                    synchronized (lockFile) {
+                        chat.addMessageToFile(String.format("[%s]: %s\n", name, message));
+                    }
                 }
             } catch (IOException e) {
                 chat.unsubscribe(this);

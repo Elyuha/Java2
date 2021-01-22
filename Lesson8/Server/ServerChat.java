@@ -7,15 +7,20 @@ import java.sql.*;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class ServerChat implements Chat {
     private ServerSocket serverSocket;
     private Set<ClientHandler> clients;
     private File file;
+    private ExecutorService service;
 //    private AuthenticationService authenticationService;
 
     public ServerChat() {
         file = new File("C:\\Users\\Евкадий\\IdeaProjects\\Lesson\\Lesson8\\Server\\MessageHistory.txt");
+        service = Executors.newCachedThreadPool();
         DBConnect.init();
         start();
     }
@@ -34,7 +39,9 @@ public class ServerChat implements Chat {
             while (true) {
                 System.out.println("Server is waiting for a connection ...");
                 Socket socket = serverSocket.accept();
-                ClientHandler clientHandler = new ClientHandler(socket, this);
+                ClientHandler clientHandler;
+                service.execute(clientHandler = new ClientHandler(socket, this));
+                service.getClass();
                 System.out.println(String.format("[%s] Client[%s] is successfully logged in", new Date(), clientHandler.getName()));
             }
         } catch (Exception e) {
